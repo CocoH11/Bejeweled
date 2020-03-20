@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="View/style.css?1342615=134262">
+    <script src="View/View.js?517356"></script>
+    <script src="Modele/Model.js?517356"></script>
+    <script src="Controller/Controller.js?517356"></script>
+    <title>Bejeweld</title>
+</head>
+<body>
+<div id="global">
+    <h1>StarBejeweled</h1>
+
+    <div class="bar">
+        <div class="percentage has-tip"  style="width: 50%" data-perc="50%">
+        </div>
+    </div>
+    <button>Nouvelle Partie</button>
+    <p id="score"></p>
+</div>
+
+<script>
+    let bar=document.getElementsByClassName('percentage')[0];
+    let level=1;
+    let perc = 50;
+    let stopPlaying=true;
+    let view, model, controller;
+    let content;
+    update=function(){
+        if (!stopPlaying){
+            bar.style.width=perc+'%';
+            //bar.dataset.perc=Math.floor(perc)+'%';
+            perc-=0.01*level;
+
+            if (perc<0) {
+                controller.stopGame();
+                stopPlaying=true;
+            }else if (perc>=100){
+                level++;
+                perc=50;
+            }
+        }
+    };
+
+
+    function start(){
+
+    }
+    window.onload=function() {
+        setInterval(update, 10);
+    };
+
+    let startButton= document.getElementsByTagName("button")[0];
+
+    startButton.addEventListener("click", function(){
+        if (content!=null)content.remove();
+        content=document.createElement("div");
+        content.id="content";
+        document.getElementById("global").append( content);
+        initGame();
+    });
+
+    function initGame(){
+        view= new View();
+        model= new Model();
+        controller= new Controller(view, model);
+    }
+</script>
+
+</body>
+</html>
